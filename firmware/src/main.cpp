@@ -1,4 +1,4 @@
-// PitchCom v0.2 -- Pitch calling with real audio clips
+// OpenSigns v0.2 -- Pitch calling with real audio clips
 // M5StickC Plus2 -> A2DP -> Earbuds
 // BtnA (front): cycle pitch type
 // BtnB (side):  send selected pitch audio to earbuds
@@ -282,7 +282,7 @@ void setup() {
     M5.Lcd.setTextColor(TFT_WHITE);
     M5.Lcd.setTextSize(2);
     M5.Lcd.setCursor(10, 40);
-    M5.Lcd.print("PitchCom v0.2");
+    M5.Lcd.print("OpenSigns v0.2");
     M5.Lcd.setTextSize(1);
     M5.Lcd.setCursor(10, 70);
     M5.Lcd.print("Initializing BT...");
@@ -290,7 +290,7 @@ void setup() {
     pinMode(BTN_A, INPUT_PULLUP);
     pinMode(BTN_B, INPUT_PULLUP);
 
-    LOG("=== PITCHCOM v0.2 ===");
+    LOG("=== OPENSIGNS v0.2 ===");
     LOG("Heap: %d", ESP.getFreeHeap());
     LOG("Audio clips: FB=%d CB=%d SL=%d CH=%d samples",
         fb_pcm_len, cb_pcm_len, sl_pcm_len, ch_pcm_len);
@@ -310,7 +310,7 @@ void setup() {
     LOG("bluedroid enable: %s", esp_err_to_name(ret));
     if (ret != ESP_OK) return;
 
-    esp_bt_dev_set_device_name("PITCHCOM-01");
+    esp_bt_dev_set_device_name("OpenSigns");
 
     esp_bt_gap_register_callback(gap_cb);
     esp_a2d_register_callback(a2d_cb);
