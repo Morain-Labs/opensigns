@@ -1,5 +1,5 @@
 // sl.wav converted to 44100Hz 16-bit stereo PCM
-// Generated from pitchcom_receiver/data/sl.wav
+// Generated from audio/source/sl.wav
 #pragma once
 #include <stdint.h>
 

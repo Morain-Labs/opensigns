@@ -1,5 +1,5 @@
 // fb.wav converted to 44100Hz 16-bit stereo PCM
-// Generated from pitchcom_receiver/data/fb.wav
+// Generated from audio/source/fb.wav
 #pragma once
 #include <stdint.h>
 

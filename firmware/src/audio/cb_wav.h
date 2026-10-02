@@ -1,5 +1,5 @@
 // cb.wav converted to 44100Hz 16-bit stereo PCM
-// Generated from pitchcom_receiver/data/cb.wav
+// Generated from audio/source/cb.wav
 #pragma once
 #include <stdint.h>
 
