@@ -2,7 +2,7 @@
 
 Open-source DIY pitch caller for baseball. A belt-clipped M5StickC Plus2 sends a recorded pitch call over Bluetooth to the catcher's earpiece.
 
-Status: v0.2. It works in real games, and it has real problems, listed below. Full build guide coming soon.
+Status: v0.2. It works, it has only been lightly tested outside of games, and it has real problems, listed below. Full build guide coming soon.
 
 - `firmware/` PlatformIO project for the M5StickC Plus2
 - `audio/source/` original recorded pitch calls (fastball, curveball, slider, changeup)
@@ -21,7 +21,7 @@ About $20 to $40 depending on what you already own.
 
 ## Known issues in v0.2
 
-These come from using it in men's league games. Each one lists what happens, why, and what you can do about it today.
+These come from testing it outside of games. Each one lists what happens, why, and what you can do about it today.
 
 ### 1. Range gets shaky at full mound distance
 
