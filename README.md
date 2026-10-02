@@ -8,6 +8,17 @@ Status: v0.2. It works in real games, and it has real problems, listed below. Fu
 - `audio/source/` original recorded pitch calls (fastball, curveball, slider, changeup)
 - `tools/wav_to_header.py` turns a WAV recording into the audio file the firmware plays
 
+## Parts
+
+About $20 to $40 depending on what you already own.
+
+| Part | What it does | Notes |
+|---|---|---|
+| M5StickC Plus2 | The sender. Screen, two buttons, Bluetooth, battery. | Sold by M5Stack and on Amazon. Link coming. |
+| Bluetooth earbud (V80013) | The catcher hears the call here. | The firmware looks for this model by name. Other earbuds work if you change `TARGET_NAME`. Link coming. |
+| Visor clip from an old garage door opener | Holds the device on your belt. | Any small clip works. |
+| Small USB battery pack | Recharges the sender between innings. | See known issue 3. Link coming. |
+
 ## Known issues in v0.2
 
 These come from using it in men's league games. Each one lists what happens, why, and what you can do about it today.
@@ -57,6 +68,13 @@ These come from using it in men's league games. Each one lists what happens, why
 - Only four pitches, and no way to call location.
 - The Bluetooth link is not encrypted.
 - Nothing warns you when the connection drops.
+
+## Roadmap
+
+- **v0.2.1, bug fixes.** Fixes for the four known issues above: range, volume, battery, and pairing.
+- **Touchscreen sender.** Move from two buttons to a touchscreen device, like a cheap smartwatch, for more pitches and location.
+- **Outcome tracking.** Log every call and what happened on the pitch, store it, and review it on a dashboard.
+- **All-in-one.** Scorekeeping built into the same system as the device, with multi-camera video later.
 
 ## Is it legal?
 
