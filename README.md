@@ -72,3 +72,7 @@ These come from testing it outside of games. Each one lists what happens, why, a
 ## Is it legal?
 
 It depends on your league. One-way communication is the key point: the device only talks to the catcher, never back. Check your league's rules before using it in a game.
+
+## License
+
+Apache 2.0. See `LICENSE`.
