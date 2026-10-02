@@ -69,13 +69,6 @@ These come from using it in men's league games. Each one lists what happens, why
 - The Bluetooth link is not encrypted.
 - Nothing warns you when the connection drops.
 
-## Roadmap
-
-- **v0.2.1, bug fixes.** Fixes for the four known issues above: range, volume, battery, and pairing.
-- **Touchscreen sender.** Move from two buttons to a touchscreen device, like a cheap smartwatch, for more pitches and location.
-- **Outcome tracking.** Log every call and what happened on the pitch, store it, and review it on a dashboard.
-- **All-in-one.** Scorekeeping built into the same system as the device, with multi-camera video later.
-
 ## Is it legal?
 
 It depends on your league. One-way communication is the key point: the device only talks to the catcher, never back. Check your league's rules before using it in a game.
