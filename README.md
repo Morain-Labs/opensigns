@@ -43,6 +43,7 @@ A note if you want to build your own sender from scratch. That's where I started
 
 - [VS Code](https://code.visualstudio.com/)
 - The PlatformIO extension, from the Extensions tab inside VS Code
+- The CH9102 USB driver from [M5Stack's M5StickC Plus2 page](https://docs.m5stack.com/en/core/M5StickC%20PLUS2). Without it your computer may not see the device when you plug it in.
 - [Python](https://www.python.org/) and [ffmpeg](https://ffmpeg.org/), only if you're recording your own calls
 
 ### 2. Get the code
@@ -84,7 +85,7 @@ Change `V80013` to your earbud's Bluetooth name. That's the name that shows up i
 
 1. Turn off Bluetooth on your phone and every other device the earbud has paired with (known issue 4).
 2. Put the earbud in pairing mode.
-3. Turn on the M5StickC. The top of the screen shows "BT: SCANNING..." until it finds the earbud, then "BT: CONNECTED" and "AUDIO OK".
+3. Turn on the M5StickC by holding the power button for about 2 seconds. M5Stack calls it Button C. It's not the B button you send with. The top of the screen shows "BT: SCANNING..." until it finds the earbud, then "BT: CONNECTED" and "AUDIO OK".
 
 You can only send a call once it says AUDIO OK.
 
