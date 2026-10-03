@@ -65,7 +65,7 @@ These come from testing it outside of games. Each one lists what happens, why, a
 
 ### Also missing
 
-- Only four pitches, and no way to call location.
+- Only four pitches.
 - The Bluetooth link is not encrypted.
 - Nothing warns you when the connection drops.
 
