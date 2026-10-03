@@ -35,7 +35,7 @@ About $20 to $40 depending on what you already own.
 
 You also need a computer and a USB-C cable that carries data, not just charge.
 
-A note if you want to build your own sender from scratch. That's where I started, with a breadboard, a processor, a battery, and buttons. The board I picked had the wrong type of Bluetooth to connect to earbuds. Earbuds need Bluetooth Classic audio (A2DP). A lot of newer chips, like the ESP32-S3 and ESP32-C3, only have Bluetooth Low Energy and can't do it. The M5StickC Plus2 runs the original ESP32, which can. That's how I ended up on the M5.
+A note if you want to build your own sender from scratch. That's where I started, with a breadboard, a processor, a battery, and buttons. The board I picked was an ESP32-S3, and it had the wrong type of Bluetooth to connect to earbuds. Earbuds need Bluetooth Classic audio (A2DP). The S3 only has Bluetooth Low Energy, and so do a lot of newer chips like the ESP32-C3. The M5StickC Plus2 runs the original ESP32, which can. That's how I ended up on the M5.
 
 ## Build guide
 
