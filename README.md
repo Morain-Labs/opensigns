@@ -4,9 +4,23 @@ Open-source DIY pitch caller for baseball. A belt-clipped M5StickC Plus2 sends a
 
 Status: v0.2. It works, it has only been lightly tested outside of games, and it has real problems, listed below. Full build guide coming soon.
 
+OpenSigns is not affiliated with, endorsed by, or connected to PitchCom.
+
 - `firmware/` PlatformIO project for the M5StickC Plus2
 - `audio/source/` original recorded pitch calls (fastball, curveball, slider, changeup)
 - `tools/wav_to_header.py` turns a WAV recording into the audio file the firmware plays
+
+## How it works
+
+The device on your belt holds the calls. I recorded my own voice saying each pitch, and those four clips live in the M5StickC's memory.
+
+It connects to the earbud over regular Bluetooth audio. That's the same way your phone plays music to your earbuds. Press A to pick the pitch. Press B and it plays that clip down the stream.
+
+The earbud doesn't know anything about pitches. It doesn't store any of the calls. It just plays whatever audio shows up. So any cheap Bluetooth earbud can work, as long as you put its name in `TARGET_NAME`.
+
+Between calls the stream sends silence. That keeps the connection open so the call plays the second you hit send. It's also a big part of why the battery drains (see known issue 3).
+
+After you send a call, the screen only shows "PITCH SENT". The other dugout has all game to stare at your belt, so the screen never shows what you called. Press A to start the next one. It always resets to fastball.
 
 ## Parts
 
