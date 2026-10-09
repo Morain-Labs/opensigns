@@ -28,10 +28,10 @@ About $20 to $40 depending on what you already own.
 
 | Part | What it does | Notes |
 |---|---|---|
-| M5StickC Plus2 | The sender. Screen, two buttons, Bluetooth, battery. | Sold by M5Stack and on Amazon. Link coming. |
-| Bluetooth earbud (V80013) | The catcher hears the call here. | The firmware looks for this model by name. Other earbuds work if you change `TARGET_NAME`. Link coming. |
+| M5StickC Plus2 | The sender. Screen, two buttons, Bluetooth, battery. | [M5Stack's product page](https://shop.m5stack.com/products/m5stickc-plus2-esp32-mini-iot-development-kit). M5Stack has stopped making it, so you may need another store while stock lasts. Don't swap in the newer M5StickS3. It uses an ESP32-S3, which can't send audio to earbuds (see below). |
+| Bluetooth earbud | The catcher hears the call here. | Any cheap single earbud works, [like this one](https://a.co/d/09H72HIC). Mine is a V80013, which is the name the firmware looks for. For any other earbud, change `TARGET_NAME` (step 4). |
 | Visor clip from an old garage door opener | Holds the device on your belt. | Any small clip works. |
-| Small USB battery pack | Recharges the sender between innings. | See known issue 3. Link coming. |
+| Small USB battery pack | Recharges the sender between innings. | Any small one works. See known issue 3. |
 
 You also need a computer and a USB-C cable that carries data, not just charge.
 
@@ -54,7 +54,20 @@ Download this repo as a ZIP from the green Code button and unzip it, or clone it
 
 The repo comes with my four calls in `audio/source/`. You can use those or record your own.
 
-I recorded my own voice on my computer, in Audacity. Say each pitch clearly and close to the mic. Keep each one short, about a second. Every clip takes up space on the device. Export each one as a WAV and name them `fb.wav`, `cb.wav`, `sl.wav`, and `ch.wav` so they replace mine.
+You can record whatever you want the catcher to hear. It doesn't have to be the pitch name. Dealer's choice. The name on the screen comes from `PITCHES[]` in `firmware/src/main.cpp`, not from the recording, so you can change those separately.
+
+Since you're recording it yourself, it could be location, a reminder about the setup, or even "missing high, move your target lower." Each one is just another clip.
+
+Why mine don't call location: no need to call location if you don't know where it's gonna go. I aim for middle-middle and let my inevitable miss do the rest of the location.
+
+How to record:
+
+- **Use your phone or your computer.** I used Audacity on my computer, which is free. A voice memo on your phone works too. The conversion tool reads most audio files, not just WAV.
+- **Find a quiet room.** Hold the mic a few inches from your mouth.
+- **Say it loud and clear.** The catcher hears this over crowd and field noise. Quiet calls are known issue 2.
+- **Keep it short.** Trim the dead air so each clip is about a second. Every second of audio takes up room on the device. After my four calls, there's only room for about 4 more seconds.
+- **Turn it up.** In Audacity, select the whole clip and use Effect, then Volume and Compression, then Normalize, set to -1 dB. That makes it as loud as it can go without distorting.
+- **Name the files for the pitch.** `fb`, `cb`, `sl`, and `ch` replace mine. Put them in `audio/source/`.
 
 Then from the repo folder, run:
 
@@ -62,7 +75,7 @@ Then from the repo folder, run:
 python tools/wav_to_header.py audio/source/fb.wav audio/source/cb.wav audio/source/sl.wav audio/source/ch.wav
 ```
 
-That turns each recording into the file the firmware plays. Record loud. Quiet calls are known issue 2.
+Change the endings if your files aren't WAVs, like `fb.m4a` from a phone. That turns each recording into the file the firmware plays.
 
 ### 4. Set your earbud's name
 
@@ -153,6 +166,22 @@ These come from testing it outside of games. Each one lists what happens, why, a
 
 It depends on your league. One-way communication is the key point: the device only talks to the catcher, never back. Check your league's rules before using it in a game.
 
+## Patents
+
+PitchCom holds US patents on pitch-calling systems. I read the claims of all 10 before releasing this, and I don't believe OpenSigns as built here uses what they cover. That's my read, not legal advice.
+
+If you build this, change it, or build something similar, I advise you to check the patents first and make sure you don't infringe. Don't build, use, or sell anything that infringes their patents.
+
+The 10 patents: US11893307, US12102874, US12169664, US12263395, US12267091, US12434101, US12530167, US12569744, US12654089, US12734427.
+
+## Contributing
+
+I'm not taking code changes from others right now. Questions and bug reports are welcome.
+
 ## License
 
-Apache 2.0. See `LICENSE`.
+Copyright 2026 Zac Morain (Morain Labs).
+
+The code is GPLv3, version 3 only (GPL-3.0-only). See `LICENSE`. You can use it, change it, and share it. If you share or sell a changed version, you have to share your code under GPLv3 too.
+
+My voice recordings are CC BY 4.0, and so are the audio files made from them in `firmware/src/audio/`. See `audio/LICENSE.md`. Use them however you want, just give me credit.

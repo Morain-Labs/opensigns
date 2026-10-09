@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright 2026 Zac Morain (Morain Labs)
 // OpenSigns v0.2 -- Pitch calling with real audio clips
 // M5StickC Plus2 -> A2DP -> Earbuds
 // BtnA (front): cycle pitch type

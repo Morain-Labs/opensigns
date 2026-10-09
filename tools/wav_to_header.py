@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright 2026 Zac Morain (Morain Labs)
 """Convert pitch call recordings into C headers the firmware can play.
 
 Usage:
