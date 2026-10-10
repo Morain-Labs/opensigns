@@ -28,7 +28,7 @@ About $20 to $40 depending on what you already own.
 
 | Part | What it does | Notes |
 |---|---|---|
-| M5StickC Plus2 | The sender. Screen, two buttons, Bluetooth, battery. | [M5Stack's product page](https://shop.m5stack.com/products/m5stickc-plus2-esp32-mini-iot-development-kit). M5Stack has stopped making it, so you may need another store while stock lasts. Don't swap in the newer M5StickS3. It uses an ESP32-S3, which can't send audio to earbuds (see below). |
+| M5StickC Plus2 | The sender. Screen, two buttons, Bluetooth, battery. | [On Amazon](https://www.amazon.com/s?k=M5StickC+Plus2), about $20 to $30. M5Stack has stopped making it, so you may have to look around for one. Specs are on [M5Stack's product page](https://shop.m5stack.com/products/m5stickc-plus2-esp32-mini-iot-development-kit). Don't swap in the newer M5StickS3. It uses an ESP32-S3, which can't send audio to earbuds (see below). |
 | Bluetooth earbud | The catcher hears the call here. | Any cheap single earbud works, [like this one](https://a.co/d/09H72HIC). Mine is a V80013, which is the name the firmware looks for. For any other earbud, change `TARGET_NAME` (step 4). |
 | Visor clip from an old garage door opener | Holds the device on your belt. | Any small clip works. |
 | Small USB battery pack | Recharges the sender between innings. | Any small one works. See known issue 3. |
