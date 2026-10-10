@@ -1,0 +1,226 @@
+name: Weekly Repository Activity Report
+
+on:
+  schedule:
+    - cron: '0 14 * * 1'
+  workflow_dispatch:
+    inputs:
+      lookback_days:
+        description: Number of days to include in the report
+        required: false
+        default: '7'
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+  discussions: read
+
+jobs:
+  weekly-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and publish weekly activity report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const lookbackDays = Number(core.getInput('lookback_days') || '7');
+
+            const end = new Date();
+            const start = new Date(end);
+            start.setUTCDate(start.getUTCDate() - lookbackDays);
+
+            const startIso = start.toISOString();
+            const endIso = end.toISOString();
+            const rangeTitleStart = startIso.slice(0, 10);
+            const rangeTitleEnd = endIso.slice(0, 10);
+
+            const inRange = (dateString) => {
+              const time = new Date(dateString).getTime();
+              return time >= start.getTime() && time <= end.getTime();
+            };
+
+            const issues = (await github.paginate(github.rest.issues.listForRepo, {
+              owner,
+              repo,
+              state: 'all',
+              since: startIso,
+              per_page: 100,
+            }))
+              .filter((item) => !item.pull_request)
+              .filter((item) => inRange(item.created_at));
+
+            const issueComments = (await github.paginate(github.rest.issues.listCommentsForRepo, {
+              owner,
+              repo,
+              since: startIso,
+              per_page: 100,
+            }))
+              .filter((item) => inRange(item.created_at));
+
+            const openedPrsSearch = await github.paginate(github.rest.search.issuesAndPullRequests, {
+              q: `repo:${owner}/${repo} is:pr created:${rangeTitleStart}..${rangeTitleEnd}`,
+              per_page: 100,
+            });
+
+            const mergedPrsSearch = await github.paginate(github.rest.search.issuesAndPullRequests, {
+              q: `repo:${owner}/${repo} is:pr is:merged merged:${rangeTitleStart}..${rangeTitleEnd}`,
+              per_page: 100,
+            });
+
+            const commits = await github.paginate(github.rest.repos.listCommits, {
+              owner,
+              repo,
+              since: startIso,
+              until: endIso,
+              per_page: 100,
+            });
+
+            const releases = (await github.paginate(github.rest.repos.listReleases, {
+              owner,
+              repo,
+              per_page: 100,
+            })).filter((release) => release.published_at && inRange(release.published_at));
+
+            const forks = (await github.paginate(github.rest.repos.listForks, {
+              owner,
+              repo,
+              sort: 'newest',
+              per_page: 100,
+            })).filter((fork) => inRange(fork.created_at));
+
+            const starsRaw = await github.paginate(
+              github.request,
+              'GET /repos/{owner}/{repo}/stargazers',
+              {
+                owner,
+                repo,
+                per_page: 100,
+                headers: {
+                  accept: 'application/vnd.github.star+json',
+                },
+              }
+            );
+            const stars = starsRaw.filter((entry) => entry.starred_at && inRange(entry.starred_at));
+
+            const discussions = [];
+            const discussionComments = [];
+            let cursor = null;
+            let hasNextPage = true;
+
+            while (hasNextPage) {
+              const result = await github.graphql(
+                `query($owner: String!, $repo: String!, $cursor: String) {
+                  repository(owner: $owner, name: $repo) {
+                    discussions(first: 100, after: $cursor, orderBy: {field: CREATED_AT, direction: DESC}) {
+                      nodes {
+                        number
+                        title
+                        createdAt
+                        url
+                        author { login }
+                        comments(first: 100) {
+                          nodes {
+                            createdAt
+                            url
+                            author { login }
+                          }
+                        }
+                      }
+                      pageInfo {
+                        endCursor
+                        hasNextPage
+                      }
+                    }
+                  }
+                }`,
+                { owner, repo, cursor }
+              );
+
+              const nodes = result.repository?.discussions?.nodes || [];
+              for (const discussion of nodes) {
+                if (inRange(discussion.createdAt)) {
+                  discussions.push(discussion);
+                }
+                for (const comment of discussion.comments.nodes) {
+                  if (inRange(comment.createdAt)) {
+                    discussionComments.push({
+                      ...comment,
+                      discussionNumber: discussion.number,
+                      discussionTitle: discussion.title,
+                    });
+                  }
+                }
+              }
+
+              const pageInfo = result.repository?.discussions?.pageInfo;
+              cursor = pageInfo?.endCursor;
+              hasNextPage = Boolean(pageInfo?.hasNextPage);
+            }
+
+            const reportTitle = `Weekly Repository Activity Report (${rangeTitleStart} to ${rangeTitleEnd})`;
+
+            const section = (title, items, formatter) => {
+              if (!items.length) {
+                return `## ${title}\n- None\n`;
+              }
+              return `## ${title}\n${items.map((item) => `- ${formatter(item)}`).join('\n')}\n`;
+            };
+
+            const markdown = [
+              `# ${reportTitle}`,
+              '',
+              `Reporting window: ${startIso} → ${endIso}`,
+              '',
+              '## Summary',
+              `- New issues: ${issues.length}`,
+              `- New issue comments: ${issueComments.length}`,
+              `- New discussions: ${discussions.length}`,
+              `- New discussion comments: ${discussionComments.length}`,
+              `- New stars: ${stars.length}`,
+              `- New forks: ${forks.length}`,
+              `- Opened PRs: ${openedPrsSearch.length}`,
+              `- Merged PRs: ${mergedPrsSearch.length}`,
+              `- New commits: ${commits.length}`,
+              `- New releases: ${releases.length}`,
+              '',
+              section('New Issues', issues.slice(0, 25), (item) => `[#${item.number}](${item.html_url}) ${item.title} (by @${item.user?.login || 'unknown'})`),
+              section('New Discussions', discussions.slice(0, 25), (item) => `[#${item.number}](${item.url}) ${item.title} (by @${item.author?.login || 'unknown'})`),
+              section('New Discussion Comments', discussionComments.slice(0, 25), (item) => `[Discussion #${item.discussionNumber}](${item.url}) on "${item.discussionTitle}" (by @${item.author?.login || 'unknown'})`),
+              section('New Stars', stars.slice(0, 25), (item) => `@${item.user?.login || 'unknown'} at ${item.starred_at}`),
+              section('New Forks', forks.slice(0, 25), (item) => `[@${item.owner?.login || 'unknown'}](${item.html_url}) at ${item.created_at}`),
+              section('Opened Pull Requests', openedPrsSearch.slice(0, 25), (item) => `[#${item.number}](${item.html_url}) ${item.title} (by @${item.user?.login || 'unknown'})`),
+              section('Merged Pull Requests', mergedPrsSearch.slice(0, 25), (item) => `[#${item.number}](${item.html_url}) ${item.title} (by @${item.user?.login || 'unknown'})`),
+              section('New Commits', commits.slice(0, 25), (item) => `[${item.sha.slice(0, 7)}](${item.html_url}) ${item.commit?.message?.split('\n')[0] || '(no message)'}`),
+              section('New Releases', releases.slice(0, 25), (item) => `[${item.tag_name}](${item.html_url}) ${item.name || ''}`),
+              '',
+              '_Generated automatically by the weekly repository activity workflow._',
+            ].join('\n');
+
+            const existing = (await github.paginate(github.rest.issues.listForRepo, {
+              owner,
+              repo,
+              state: 'all',
+              per_page: 100,
+            })).find((item) => item.title === reportTitle);
+
+            if (existing) {
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: existing.number,
+                title: reportTitle,
+                body: markdown,
+              });
+              core.info(`Updated existing weekly report issue #${existing.number}`);
+            } else {
+              const created = await github.rest.issues.create({
+                owner,
+                repo,
+                title: reportTitle,
+                body: markdown,
+              });
+              core.info(`Created weekly report issue #${created.data.number}`);
+            }
