@@ -4,6 +4,8 @@ Open-source DIY pitch caller for baseball. A belt-clipped M5StickC Plus2 sends a
 
 Status: v0.2. It works, but it has only been tested at my desk, outside at about 30 feet, and in the bullpen. It has never been used in a game, and it has real problems, listed below.
 
+The story behind it and a plain-English write-up of the build: [OpenSigns: A Pitch Caller You Can Build Yourself](https://morainorshine.com/blog/opensigns-build).
+
 OpenSigns is not affiliated with, endorsed by, or connected to PitchCom.
 
 - `firmware/` PlatformIO project for the M5StickC Plus2
@@ -30,12 +32,12 @@ About $20 to $40 depending on what you already own.
 |---|---|---|
 | M5StickC Plus2 | The sender. Screen, two buttons, Bluetooth, battery. | [On Amazon](https://www.amazon.com/s?k=M5StickC+Plus2), about $20 to $30. M5Stack has stopped making it, so you may have to look around for one. Specs are on [M5Stack's product page](https://shop.m5stack.com/products/m5stickc-plus2-esp32-mini-iot-development-kit). Don't swap in the newer M5StickS3. It uses an ESP32-S3, which can't send audio to earbuds (see below). |
 | Bluetooth earbud | The catcher hears the call here. | Any cheap single earbud works, [like this one](https://a.co/d/09H72HIC). Mine is a V80013, which is the name the firmware looks for. For any other earbud, change `TARGET_NAME` (step 4). |
-| Visor clip from an old garage door opener | Holds the device on your belt. | Any small clip works. |
+| Visor clip from a garage door opener | Holds the device on your belt. | Any small clip works. |
 | Small USB battery pack | Recharges the sender between innings. | Any small one works. See known issue 3. |
 
 You also need a computer and a USB-C cable that carries data, not just charge.
 
-A note if you want to build your own sender from scratch. That's where I started, with a breadboard, a processor, a battery, and buttons. The board I picked was an ESP32-S3, and it had the wrong type of Bluetooth to connect to earbuds. Earbuds need Bluetooth Classic audio (A2DP). The S3 only has Bluetooth Low Energy, and so do a lot of newer chips like the ESP32-C3. The M5StickC Plus2 runs the original ESP32, which can. That's how I ended up on the M5.
+A note if you want to build your own sender from scratch. That's where I started, with a breadboard, a processor, a battery, and buttons. The board I started with was an ESP32-S3, and it had the wrong type of Bluetooth to connect to earbuds. Earbuds need Bluetooth Classic audio (A2DP). The S3 only has Bluetooth Low Energy, and so do a lot of newer chips like the ESP32-C3. The M5StickC Plus2 runs the original ESP32, which can. That's how I ended up on the M5.
 
 ## Build guide
 
